@@ -1,0 +1,13 @@
+<h1>{{title}}</h1>
+<h1 *ngIf="!title">Our Store</h1>
+<div class="d-flex flex-wrap justify-content-center">
+    <div 
+        class="m-2 col-sm-3 product"
+        *ngFor="let product of products$ | async let i = index" 
+        (click)="seeProduct(i)">
+        <div *ngIf="products$">
+            <app-product-item [product]=product></app-product-item>
+            <!-- <router-outlet></router-outlet> -->
+        </div>
+    </div>
+</div>

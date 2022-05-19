@@ -1,0 +1,87 @@
+<div class="container">
+    <div class="row">
+        <div class="sign-up col-md-6">
+            <form class="p-2" (submit)="onSubmitUp()" [formGroup]="signUpForm">
+                <h3>Sign Up</h3>
+                <div class="form-group">
+                    <label for="email">Enter Email:</label>
+                    <input type="text" name="email" id="email" class="form-control" formControlName="email">
+                    <ul
+                        class="text-danger"
+                        *ngIf="!signUpForm.controls.email.valid && signUpForm.controls.email.touched">
+                        <li>Please enter a valid email</li>
+                        <li>mimi@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label for="name">Enter Passowrd:</label>
+                    <input type="password" name="passowrd" id="passowrd" class="form-control" formControlName="password">
+                    <ul
+                        class="text-danger"
+                        *ngIf="!signUpForm.controls.password.valid && signUpForm.controls.password.touched"
+                    >
+                        <li>Please enter a valid password</li>
+                        <li>Length 6 or more</li>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label for="name">Confirm Passowrd:</label>
+                    <input 
+                        type="password"
+                        name="passowrdcon"
+                        id="passowrdcon"
+                        class="form-control"
+                        formControlName="password2">
+                    <p
+                        class="text-danger"
+                        *ngIf="!signUpForm.controls.password2.valid && signUpForm.controls.password2.touched"
+                        >Passwords do not match.</p>
+                </div>
+                <div class="controls">
+                    <button type="button" class="btn btn-danger me-2 mt-2" (click)="clearUp()">Clear Form</button>
+                    <button type="submit" class="btn btn-success mt-2">Sign Up</button>
+                </div>
+            </form>
+        </div>
+        <div class="sign-up col-md-6">
+            <form class="p-2" #logInForm="ngForm" (submit)="onSubmitIn(logInForm)">
+                <h3>Sign In</h3>
+                <div class="form-group">
+                    <label for="email">Enter Email:</label>
+                    <input 
+                        type="text"
+                        id="email"
+                        name="email"
+                        class="form-control"
+                        ngModel email required #email="ngModel"
+                        minlength="6">
+                    <p
+                        class="text-danger"
+                        *ngIf="!email.valid && email.touched"
+                    >Please enter a valid email</p>
+                </div>
+                <div class="form-group">
+                    <label for="name">Enter Passowrd:</label>
+                    <input 
+                        type="password"
+                        id="passowrd"
+                        name="passowrd"
+                        class="form-control"
+                        ngModel required #password="ngModel"
+                        minlength="6">
+                    <ul
+                        class="text-danger"
+                        *ngIf="!password.valid && password.touched"
+                    >
+                    <li>Please enter a valid password</li>
+                    <li>Length 6 or more</li>
+                    </ul>
+                </div>
+                <div class="controls">
+                    <button type="button" class="btn btn-danger me-2 mt-2" (click)="clearIn(logInForm)">Clear Form</button>
+                    <button type="submit" class="btn btn-success mt-2">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

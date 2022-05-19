@@ -1,0 +1,10 @@
+<!-- // product card -->
+<div class="card p-3">
+    <p tooltip="{{product.title}}">{{ product.title | shorten}}</p>
+    <img src="{{product.image}}" alt="{{product.description}}">
+    <div class="controls col-sm-12 ">
+      <button class="btn btn-danger" (click)="subtractCount()">-</button>
+      <input type="text" class="form-control" value="{{count}}">
+      <button class="btn btn-success" (click)="addCount()">+</button>
+    </div>
+</div>
