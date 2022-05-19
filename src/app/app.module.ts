@@ -1,19 +1,20 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http'
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthEffects } from './auth/store/auth.effects';
 import { CartComponent } from './cart/cart.component';
-import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-
+import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { ProductsModule } from './products/products.module';
-import { StoreModule } from '@ngrx/store';
 import * as fromApp from './store/app.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { AuthEffects } from './auth/store/auth.effects';
 
 @NgModule({
   declarations: [
@@ -29,9 +30,13 @@ import { AuthEffects } from './auth/store/auth.effects';
     HttpClientModule,
     ProductsModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([AuthEffects])
+    EffectsModule.forRoot([AuthEffects]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
