@@ -8,6 +8,8 @@ import * as environment from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { pipe } from 'rxjs';
 import { User } from '../user.model';
+import { IResponseFirebase } from 'src/app/shared/interfaces';
+
 
 @Injectable()
 export class AuthEffects {
@@ -15,44 +17,59 @@ export class AuthEffects {
   signUpUrl = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${environment.environment.key}`;
 
   @Effect()
+  authInitiateLogin = this.action$.pipe(
+    ofType(AuthActions.INITIATE_LOGIN),
+    switchMap(
+      (auth: AuthActions.InitiateLogin) => {
+        // console.log(auth);
+        return this.http.post(
+          this.signInUrl,
+          {
+            email: auth.payload.email,
+            password: auth.payload.password,
+            returnSecureToken: true
+          }
+        ).pipe(
+          map(
+            (resData: IResponseFirebase) => {
+              // const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
+              const expirationDate = new Date(new Date().getTime() + 10 * 1000);
+              return new AuthActions.Login({
+                email: resData.email,
+                token: resData.idToken,
+                expiresDate: expirationDate
+              })
+            }
+          )
+        )
+      }
+    )
+  );
+
+  @Effect({dispatch: false})
   authLogin = this.action$.pipe(
     ofType(AuthActions.LOGIN),
-    // tap(
-    //     () => {
-    //         this.router.navigate(['/products']);
-    //     }
-    // ),
-    take(1),
-    switchMap((res: AuthActions.Login) => {
-      console.log('effect');
-      console.log(res);
-      // debugger;
-      return this.http.post(this.signInUrl, res.payload);
-    }),
-    map((data: User) => {
-      console.log('effect logout part');
-      console.log(data);
-      return new AuthActions.LoginSuccess(data);
-    })
+    tap(
+      (data: AuthActions.Login) => {
+        const user = new User(data.payload.email, data.payload.token,
+          data.payload.expiresDate);
+        // console.log(data);
+        localStorage.setItem('user', JSON.stringify(user));
+        console.log(localStorage.getItem('user'));
+        this.router.navigate(['/products']);
+      }
+    )
   );
 
-  @Effect()
+  @Effect({dispatch: false})
   authLogout = this.action$.pipe(
     ofType(AuthActions.LOGOUT),
-    tap(() => {
-      this.router.navigate(['/auth']);
-    })
-  );
-
-  @Effect()
-  authSignUp = this.action$.pipe(
-    ofType(AuthActions.SIGNUP),
-    switchMap((res: AuthActions.SignUp) => {
-      return this.http.post('', res.payload);
-    }),
-    tap(() => {
-      this.router.navigate(['/products']);
-    })
+    tap(
+      (data: AuthActions.Logout) => {
+        localStorage.removeItem('user');
+        this.router.navigate(['auth']);
+      }
+    )
   );
 
   constructor(

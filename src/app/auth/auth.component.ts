@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { AuthService } from './auth.service';
 
 import * as AuthActions from './store/auth.actions';
 import * as fromAuth from './store/auth.reducer';
+import { IResponseFirebase } from '../shared/interfaces';
 
 
 @Component({
@@ -15,7 +17,8 @@ export class AuthComponent implements OnInit {
   signUpForm: FormGroup;
 
   constructor(
-    private store: Store<fromAuth.State>
+    private store: Store<fromAuth.State>,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -32,8 +35,14 @@ export class AuthComponent implements OnInit {
       alert('please enter the right details');
       return;
     }
-    this.store.dispatch(new AuthActions.Login({email: logInForm.value.email, password: logInForm.value.password}));
-    console.log(logInForm);
+    this.authService.signIn(logInForm.value.email, logInForm.value.password)
+      .subscribe(
+        (res: IResponseFirebase) => {
+          console.log(res);
+        }
+      );
+    // this.store.dispatch(new AuthActions.InitiateLogin({email: logInForm.value.email, password: logInForm.value.password}));
+    // console.log(logInForm);
   }
   
   onSubmitUp(): void {

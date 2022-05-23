@@ -1,1 +1,12 @@
-<p>cart works!</p>
+<div class="container">
+    <div *ngFor="let product of cart">
+        <div>
+            <p>{{product.title}}</p>
+            <img [src]="product.image" alt="" style="">
+        </div>
+    </div>
+
+    <div *ngIf="cart.length == 0">
+        <p>No items selected yet</p>
+    </div>
+</div>

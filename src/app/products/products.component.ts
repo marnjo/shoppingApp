@@ -21,8 +21,4 @@ export class ProductsComponent implements OnInit {
     this.products$ = this.productService.getProducts();
   }
 
-  seeProduct(i: number): void {
-    this.router.navigate(['/products', i]);
-  }
-
 }

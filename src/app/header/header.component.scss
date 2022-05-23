@@ -15,5 +15,20 @@ nav {
 }
 
 .active {
-    color: green;
+    color: rgb(13, 41, 119);
+}
+
+.add-cursor {
+    cursor: pointer;
+}
+
+li a {
+    position: relative;
+}
+
+a span {
+    position: absolute;
+    margin-top: -5px;
+    margin-left: 5px;
+    color: red;
 }

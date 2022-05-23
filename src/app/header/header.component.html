@@ -1,20 +1,30 @@
 <nav class="p-4">
     <p><strong>Zuchini Store</strong></p>
     <ul class="nav">
-        <!-- <li routerLinkActive="active" *ngIf="!isAuthenticated">
-            <a routerLink="/auth">Authenticate</a>
-        </li> -->
-        <li routerLinkActive="active" class="nav-item">
-            <a routerLink="/" class="nav-link">Home</a>
+        <li class="nav-item">
+            <a 
+                routerLink="/"
+                class="nav-link"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">Home</a>
         </li>
         <li routerLinkActive="active">
-            <a routerLink="/products" class="nav-link">Products</a>
+            <a routerLink="/products" class="nav-link" routerLinkActive="active">Products</a>
         </li>
         <li routerLinkActive="active">
-            <a routerLink="/cart" class="nav-link">Cart</a>
+            <a routerLink="/cart" class="nav-link" routerLinkActive="active">
+                Cart
+                <span>{{cartCount > 0 ? cartCount : ''}}</span>
+            </a>
         </li>
-        <li routerLinkActive="active">
-            <a routerLink="/auth" class="nav-link text-danger">Logout</a>
+        <li routerLinkActive="active" *ngIf="!isAuthenticated">
+            <a routerLink="/auth" class="nav-link" routerLinkActive="active">Sign In/Up</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="isAuthenticated">
+            <a class="nav-link add-cursor" routerLinkActive="active">Profile</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="isAuthenticated">
+            <a class="nav-link text-danger add-cursor" (click)="onLogout()">Logout</a>
         </li>
       </ul>
 </nav>
